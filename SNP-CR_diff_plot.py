@@ -7,8 +7,9 @@
 
 import sys
 import argparse
-import textwrap as _textwrap
-
+import pickle
+import gzip
+from itertools import combinations
 
 parser = argparse.ArgumentParser(
     description="Calculate jaccard distance between all CRISPR arrays and lookup core-genome SNP differences between isolates encoding those arrays. Plot as scatterplot.")
@@ -35,3 +36,10 @@ parser.add_argument(
     )
 
 args = parser.parse_args(sys.argv[1:])
+
+if args.z:
+    with gzip.open(args.diff_dict, 'rb') as fin:
+        SNP_diff_dict = pickle.load(fin)
+else:
+    with open(args.diff_dict, 'rb') as fin:
+        SNP_diff_dict = pickle.load(fin)
