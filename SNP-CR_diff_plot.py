@@ -37,9 +37,18 @@ parser.add_argument(
 
 args = parser.parse_args(sys.argv[1:])
 
+# SNP_diff_dict of the format {('isolate1', 'isolate2') : num_SNPs}
+
 if args.z:
     with gzip.open(args.diff_dict, 'rb') as fin:
         SNP_diff_dict = pickle.load(fin)
 else:
     with open(args.diff_dict, 'rb') as fin:
         SNP_diff_dict = pickle.load(fin)
+
+array_rep_dict = {} # {'Array_ID' : ['Isolate1', 'Isolate2']} where the list includes all isolates with that array
+
+with open(args.array_representatives, 'r') as fin:
+    for line in fin.readlines()[1:]:
+        elements = line.split()
+        array_rep_dict[elements[0]] = elements[1:]
