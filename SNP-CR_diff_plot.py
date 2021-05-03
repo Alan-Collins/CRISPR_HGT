@@ -5,6 +5,8 @@
 # DATE        :  2021-4-30
 # DESCRIPTION :  Calculate jaccard similarity between all CRISPR arrays and lookup core-genome SNP differences between isolates encoding those arrays. Plot as scatterplot.
 
+# python3 SNP-CR_diff_plot.py -a data/Final_hi_qual_array_ID_reps.txt -d Final_plus_forgotten_cc_diff_dict.pkl.gz -o ./ -z -n Final_dataset_hiq_arrays_network.txt
+
 import sys
 import argparse
 import pickle
