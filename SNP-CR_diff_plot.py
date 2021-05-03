@@ -108,8 +108,8 @@ with open(args.array_network, 'r') as fin:
 
 
 plt.scatter(Core_SNP_list, Jaccard_list, alpha=0.2, s=[1 for i in Jaccard_list])
-plt.title("Histogram of distribution of SNP distances\nbetween isolates encoding identical arrays")
-plt.xlabel('Number of SNPs between isolates encoding an identical array')
-plt.ylabel('Bin count (log10)')
+plt.title("Scatterplot of distribution of SNP distances and Jaccard similarity indices\nbetween isolates encoding related arrays")
+plt.xlabel('Number of SNPs between isolates encoding related arrays')
+plt.ylabel('Jaccard similarity index of arrays')
 plt.tight_layout()
 plt.savefig(args.out_prefix + 'related_array_snp_distances_scatter.png', dpi=300)
