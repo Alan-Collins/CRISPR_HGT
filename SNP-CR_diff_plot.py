@@ -100,14 +100,14 @@ with open(args.array_network, 'r') as fin:
                 else:
                     if source_rep == target_rep:
                         Core_SNP_list.append(0)
-                        print(source, target, source_rep, target_rep, jaccard)
+                        # print(source, target, source_rep, target_rep, jaccard)
                     else:
                         print("Can't find {} in the diff_dict provided.".format((source_rep, target_rep)))
                         continue
                 Jaccard_list.append(jaccard)
 
 
-plt.scatter(Core_SNP_list, Jaccard_list, alpha=0.2, s=[1 for i in Jaccard_list])
+plt.scatter(Core_SNP_list, Jaccard_list, alpha=1, marker=",", s=0.1) # s=[2 for i in Jaccard_list],
 plt.title("Scatterplot of distribution of SNP distances and Jaccard similarity indices\nbetween isolates encoding related arrays")
 plt.xlabel('Number of SNPs between isolates encoding related arrays')
 plt.ylabel('Jaccard similarity index of arrays')
