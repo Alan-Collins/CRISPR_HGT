@@ -5,7 +5,7 @@
 # DATE        :  2021-4-30
 # DESCRIPTION :  Calculate jaccard similarity between all CRISPR arrays and lookup core-genome SNP differences between isolates encoding those arrays. Plot as scatterplot.
 
-# python3 SNP-CR_diff_plot.py -a data/Final_hi_qual_array_ID_reps.txt -d Final_plus_forgotten_cc_diff_dict.pkl.gz -o ./ -z -n Final_dataset_hiq_arrays_network.txt
+# python3 SNP-CR_diff_plot.py -a data/Final_hi_qual_array_ID_reps.txt -d data/Final_plus_forgotten_cc_diff_dict.pkl.gz -o out/ -z -n data/Final_dataset_hiq_arrays_network.txt
 
 import sys
 import argparse
@@ -70,15 +70,46 @@ for array, reps in array_rep_dict.items():
             elif tuple(reversed(combo)) in SNP_diff_dict.keys():
                 Core_SNP_list.append(SNP_diff_dict[tuple(reversed(combo))])
             else:
-                print("Can't find {}".format(combo))
+                print("Can't find {} in the diff_dict provided.".format(combo))
                 continue
             Jaccard_list.append(1)
 
-plt.hist(Core_SNP_list, density=False, bins=1000)
+# plt.hist(Core_SNP_list, density=False, bins=1000)
+# plt.title("Histogram of distribution of SNP distances\nbetween isolates encoding identical arrays")
+# plt.yscale("log")
+# plt.xlabel('Number of SNPs between isolates encoding an identical array')
+# plt.ylabel('Bin count (log10)')
+# plt.tight_layout()
+# plt.savefig(args.out_prefix + 'identical_array_snp_distances.png', dpi=300)
+# plt.close()
+
+
+with open(args.array_network, 'r') as fin:
+    for line in fin.readlines()[1:]:
+        bits = line.split()
+        source = bits[0]
+        target = bits[2]
+        jaccard = bits[8]
+        for source_rep in array_rep_dict[source]:
+            for target_rep in array_rep_dict[target]:
+                
+                if (source_rep, target_rep) in SNP_diff_dict.keys():
+                    Core_SNP_list.append(SNP_diff_dict[(source_rep, target_rep)])
+                elif (target_rep, source_rep) in SNP_diff_dict.keys():
+                    Core_SNP_list.append(SNP_diff_dict[(target_rep, source_rep)])
+                else:
+                    if source_rep == target_rep:
+                        Core_SNP_list.append(0)
+                        print(source, target, source_rep, target_rep, jaccard)
+                    else:
+                        print("Can't find {} in the diff_dict provided.".format((source_rep, target_rep)))
+                        continue
+                Jaccard_list.append(jaccard)
+
+
+plt.scatter(Core_SNP_list, Jaccard_list, alpha=0.2, s=[1 for i in Jaccard_list])
 plt.title("Histogram of distribution of SNP distances\nbetween isolates encoding identical arrays")
-plt.yscale("log")
 plt.xlabel('Number of SNPs between isolates encoding an identical array')
 plt.ylabel('Bin count (log10)')
 plt.tight_layout()
-plt.savefig(args.out_prefix + 'identical_array_snp_distances.png', dpi=300)
-plt.close()
+plt.savefig(args.out_prefix + 'related_array_snp_distances_scatter.png', dpi=300)
