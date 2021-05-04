@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # AUTHOR      :  ALAN COLLINS
-# VERSION     :  v0.1
+# VERSION     :  v1
 # DATE        :  2021-4-30
 # DESCRIPTION :  Calculate jaccard similarity between all CRISPR arrays and lookup core-genome SNP differences between isolates encoding those arrays. Plot as scatterplot.
 
@@ -74,14 +74,14 @@ for array, reps in array_rep_dict.items():
                 continue
             Jaccard_list.append(1)
 
-# plt.hist(Core_SNP_list, density=False, bins=1000)
-# plt.title("Histogram of distribution of SNP distances\nbetween isolates encoding identical arrays")
-# plt.yscale("log")
-# plt.xlabel('Number of SNPs between isolates encoding an identical array')
-# plt.ylabel('Bin count (log10)')
-# plt.tight_layout()
-# plt.savefig(args.out_prefix + 'identical_array_snp_distances.png', dpi=300)
-# plt.close()
+plt.hist(Core_SNP_list, density=False, bins=1000)
+plt.title("Histogram of distribution of SNP distances\nbetween isolates encoding identical arrays")
+plt.yscale("log")
+plt.xlabel('Number of SNPs between isolates encoding an identical array')
+plt.ylabel('Bin count (log10)')
+plt.tight_layout()
+plt.savefig(args.out_prefix + 'identical_array_snp_distances.png', dpi=300)
+plt.close()
 
 
 with open(args.array_network, 'r') as fin:
@@ -100,7 +100,6 @@ with open(args.array_network, 'r') as fin:
                 else:
                     if source_rep == target_rep:
                         Core_SNP_list.append(0)
-                        # print(source, target, source_rep, target_rep, jaccard)
                     else:
                         print("Can't find {} in the diff_dict provided.".format((source_rep, target_rep)))
                         continue
